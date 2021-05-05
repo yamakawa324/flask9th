@@ -32,9 +32,9 @@ def greet(name):
     text = name + "さんこんにちは"
     return text
 
-@app.route("/tpltest")
-def tpltest():
-    return render_template("index.html")
+@app.route("/tpltest/<name>")
+def tpltest(name):
+    return render_template("index.html", tpl_name=name)
 
 
 
