@@ -21,6 +21,10 @@ def hello():
 def good():
     name = "Good"
     return name
+@app.route("/top")
+def top():
+    text = "ここはトップページです"
+    return text
 
 ## おまじない
 if __name__ == "__main__":
