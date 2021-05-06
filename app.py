@@ -36,6 +36,9 @@ def greet(name):
 def tpltest(name):
     return render_template("index.html", tpl_name=name)
 
+@app.route("/profile")
+def profile():
+    return render_template("profile.html")
 
 
 
