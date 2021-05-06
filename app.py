@@ -38,7 +38,10 @@ def tpltest(name):
 
 @app.route("/profile")
 def profile():
-    return render_template("profile.html")
+    name = "やまかわさと"
+    ago = 27
+    address = "うるま市宮里842ー３"
+    return render_template("profile.html", tpl_name=name, tpl_ago=ago, tpl_address=address)
 
 
 
