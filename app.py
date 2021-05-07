@@ -9,7 +9,7 @@
 # if __name__ == "__main__":
 #     app.run(debug=True)
 
-from flask import Flask, render_template #ファイル名flaskでFlaskやるよ 追加もこっちで！ *は全部！
+from flask import Flask, render_template, request #ファイル名flaskでFlaskやるよ 追加もこっちで！ *は全部！
 import sqlite3
 app = Flask(__name__) #アプリ名
 
@@ -63,6 +63,55 @@ def dbtest():
     #dbとの接続を終了
     c.close()
     return render_template("dbtest.html", tpl_name=user_info[0],tpl_age=user_info[1],tpl_address=user_info[2])
+
+@app.route("/addpage") 
+def addpage():
+    return render_template("add.html")
+
+# POSTメソッド入力フォームからデータ送信
+@app.route("/add", methods=["POST"])
+def add():
+    # 入力フォームから文字もらう
+    task_get = request.form.get("task")
+    print(task_get)
+    #データベース接続
+    conn = sqlite3.connect("dbtest.db")
+    #dbを操作できるように
+    c = conn.cursor()
+    #db実行
+    c.execute("insert into task values(null, ?)", (task_get,))
+    #DBの変更保存
+    conn.commit()
+    #Dbとの接続終了
+    c.close()
+    return "dbに保存"
+
+# dbたすく表示
+@app.route("/list")
+def list():
+     #データベース接続
+    conn = sqlite3.connect("dbtest.db")
+    #dbを操作できるように
+    c = conn.cursor()
+    #db実行
+    c.execute("select id,name from task")
+    #dbで取得したデータを変数に格納
+    task_info = c.fetchall()
+    print(task_info)
+    #dbとの接続を終了
+    c.close()
+    #task_listを辞書型として宣言
+    task_list = []
+    #タプルから
+    for item in task_info:
+        task_list.append({"id": item[0], "name": item[1]})
+
+    return render_template("list.html", tpl_task_list=task_list)
+
+
+
+
+
 
 @app.errorhandler(404)
 def page_not_found(error):
