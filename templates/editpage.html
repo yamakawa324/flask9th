@@ -1,0 +1,11 @@
+{% extends "bese.html" %}  
+{% block content %}
+
+ <!-- ボタンをを押した先のリンク先 -->
+<form action="/edit" method="POST"> 
+    <input type="hidden" value="{{tpl_task_info[0]}}" name="id">
+    <input type="text" maxlength="100" name ="task"value="{{tpl_task_info[1]}}" > 
+    <input type="submit" value="編集">
+</form>
+
+{% endblock %}

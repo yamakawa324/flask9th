@@ -5,7 +5,10 @@
     <tr>
         <td>{{item["id"]}}</td>
         <td>{{item["name"]}}</td>
+        <td><a href="/editpage/{{item['id']}}">編集</a></td>
     </tr>
     {% endfor %}
 </table>
+<!--リンク先へ飛ぶ-->
+<a href="/addpage">タスクを追加する</a>
 {% endblock %}

@@ -9,7 +9,7 @@
 # if __name__ == "__main__":
 #     app.run(debug=True)
 
-from flask import Flask, render_template, request #ファイル名flaskでFlaskやるよ 追加もこっちで！ *は全部！
+from flask import Flask, render_template, request, redirect #ファイル名flaskでFlaskやるよ 追加もこっちで！ *は全部！
 import sqlite3
 app = Flask(__name__) #アプリ名
 
@@ -84,7 +84,8 @@ def add():
     conn.commit()
     #Dbとの接続終了
     c.close()
-    return "dbに保存"
+    #/listにリダイレクト インポートしないとできないよ
+    return redirect("/list")
 
 # dbたすく表示
 @app.route("/list")
@@ -102,15 +103,43 @@ def list():
     c.close()
     #task_listを辞書型として宣言
     task_list = []
-    #タプルから
+    #タプルから辞書がたに整形
     for item in task_info:
         task_list.append({"id": item[0], "name": item[1]})
 
     return render_template("list.html", tpl_task_list=task_list)
 
+@app.route("/editpage/<task_id>")
+def editpage(task_id):
+     #データベース接続
+    conn = sqlite3.connect("dbtest.db")
+    #dbを操作できるように
+    c = conn.cursor()
+    #db実行
+    c.execute("select id,name from task where id = ?", (task_id,))
+    #dbで取得したデータを変数に格納
+    task_info = c.fetchone()
+    print(task_info)
+    #dbとの接続を終了
+    c.close()
+    return render_template("editpage.html",tpl_task_info=task_info)
 
-
-
+@app.route("/edit", methods=["POST"])
+def post():
+    #入力フォームから値を受け取る
+    edit_id = request.form.get("id")
+    edit_task = request.form.get("task")
+     #データベース接続
+    conn = sqlite3.connect("dbtest.db")
+    #dbを操作できるように
+    c = conn.cursor()
+    #db実行
+    c.execute("update task set name = ? where id = ?", (edit_task, edit_id))
+    #DBの変更保存
+    conn.commit()
+    #Dbとの接続終了
+    c.close()
+    return redirect("/list")
 
 
 @app.errorhandler(404)
