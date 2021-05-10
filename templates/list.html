@@ -6,6 +6,7 @@
         <td>{{item["id"]}}</td>
         <td>{{item["name"]}}</td>
         <td><a href="/editpage/{{item['id']}}">編集</a></td>
+        <td><a href="/del/{{item['id']}}">削除</a></td>
     </tr>
     {% endfor %}
 </table>

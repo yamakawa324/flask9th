@@ -141,6 +141,23 @@ def post():
     c.close()
     return redirect("/list")
 
+@app.route("/del/<del_id>")
+def delete(del_id):
+    #データベース接続
+    conn = sqlite3.connect("dbtest.db")
+    #dbを操作できるように
+    c = conn.cursor()
+    #db実行
+    c.execute("delete from task where id = ?", (del_id,))
+    #DBの変更保存
+    conn.commit()
+    #Dbとの接続終了
+    c.close()
+    return redirect("/list")
+
+@app.route("/registpage")
+def registpage():
+    return render_template("regist.html")
 
 @app.errorhandler(404)
 def page_not_found(error):

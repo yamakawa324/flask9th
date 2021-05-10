@@ -1,0 +1,13 @@
+{% extends "bese.html" %}  
+{% block content %}
+
+ <!-- リンク先 -->
+<form action="/regist" method="POST"> 
+    <p>アカウント名</p>
+    <input type="text" maxlength="100" name ="task"> 
+    <p>パスワード</p>
+    <input type="password" maxlength="20" name="password">
+    <input type="submit" value="登録">
+</form>
+
+{% endblock %}
